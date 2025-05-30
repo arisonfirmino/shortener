@@ -13,7 +13,7 @@ const buttonVariants = cva(
           "bg-primary text-primary-foreground hover:bg-primary/90 shadow-xs",
         outline:
           "border-border/10 text-foreground/50 hover:text-foreground hover:border-border/50 active:text-foreground active:border-border/50 border bg-transparent [&_svg:not([class*='size-'])]:size-3.5",
-        link: "w-fit hover:underline active:underline",
+        link: "w-fit text-nowrap hover:underline active:underline",
       },
       size: {
         default: "h-10 px-4 py-2 has-[>svg]:justify-between has-[>svg]:px-3",
