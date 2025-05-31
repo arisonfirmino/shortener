@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
 import { signIn } from "next-auth/react";
 
 import { useForm } from "react-hook-form";
@@ -14,7 +13,7 @@ import { Button } from "@/app/components/ui/button";
 
 import { LoaderCircleIcon, MoveRightIcon } from "lucide-react";
 
-import { createAccount } from "@/app/actions/user";
+import { createUser, CreateUserResponse } from "@/app/actions/user";
 
 const schema = yup.object({
   email: yup
@@ -57,37 +56,22 @@ const SignUpForm = () => {
     errors.username?.message ||
     errors.password?.message;
 
+  const handleErrors = (response: CreateUserResponse) => {
+    if (!response.success) {
+      setError(response.type, {
+        type: "manual",
+        message: response.error,
+      });
+    }
+  };
+
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
 
-    const response = await createAccount({
-      email: data.email,
-      username: data.username,
-      password: data.password,
-    });
+    const response = await createUser(data);
 
-    if (response?.error) {
-      if (response.type === "email") {
-        setError("email", {
-          type: "manual",
-          message: response.error,
-        });
-      }
-
-      if (response.type === "username") {
-        setError("username", {
-          type: "manual",
-          message: response.error,
-        });
-      }
-
-      if (response.type === "password") {
-        setError("password", {
-          type: "manual",
-          message: response.error,
-        });
-      }
-
+    if (!response.success) {
+      handleErrors(response);
       setIsLoading(false);
       return;
     }
