@@ -3,15 +3,13 @@
 import { db } from "@/app/lib/prisma";
 import { revalidatePath } from "next/cache";
 
+import { CreateUserResponse } from "@/types";
+
 interface CreateUserDTO {
   email: string;
   username: string;
   password: string;
 }
-
-export type CreateUserResponse =
-  | { success: true }
-  | { success: false; type: "email" | "username" | "password"; error: string };
 
 export const createUser = async ({
   email,

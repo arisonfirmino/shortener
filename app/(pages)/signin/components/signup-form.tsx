@@ -13,7 +13,9 @@ import { Button } from "@/app/components/ui/button";
 
 import { LoaderCircleIcon, MoveRightIcon } from "lucide-react";
 
-import { createUser, CreateUserResponse } from "@/app/actions/user";
+import { createUser } from "@/app/actions/user";
+
+import { CreateUserResponse } from "@/types";
 
 const schema = yup.object({
   email: yup
