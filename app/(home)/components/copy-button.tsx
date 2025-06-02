@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 const CopyButton = ({ shortId }: { shortId: string }) => {
   const copy = async () => {
-    const shortURL = `https://${process.env.NEXT_PUBLIC_BASE_URL + shortId}`;
+    const shortURL = process.env.NEXT_PUBLIC_BASE_URL + shortId;
     await navigator.clipboard
       .writeText(shortURL)
       .then(() => toast("Link copiado para a área de transferência!"));
