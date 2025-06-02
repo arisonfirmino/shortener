@@ -7,11 +7,11 @@ import { Button } from "@/app/components/ui/button";
 
 import { LoaderCircleIcon, UnlockIcon } from "lucide-react";
 
-import { reactivateShortURL } from "@/app/actions/url";
+import { reactivateShortUrl } from "@/app/actions/url/reactivate";
 
 import { toast } from "sonner";
 
-const ReactivateURLButton = ({ shortURLId }: { shortURLId: string }) => {
+const ReactivateUrlButton = ({ shortUrlId }: { shortUrlId: string }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { data: session } = useSession();
@@ -24,7 +24,16 @@ const ReactivateURLButton = ({ shortURLId }: { shortURLId: string }) => {
 
     setIsLoading(true);
 
-    await reactivateShortURL({ userId: session.user.id, shortURLId });
+    const response = await reactivateShortUrl({
+      userId: session.user.id,
+      shortUrlId,
+    });
+
+    if (!response.success) {
+      setIsLoading(false);
+      toast(response.error);
+      return;
+    }
 
     setIsLoading(false);
     toast("URL reativada com sucesso!");
@@ -46,4 +55,4 @@ const ReactivateURLButton = ({ shortURLId }: { shortURLId: string }) => {
   );
 };
 
-export default ReactivateURLButton;
+export default ReactivateUrlButton;

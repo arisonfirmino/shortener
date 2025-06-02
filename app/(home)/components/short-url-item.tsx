@@ -9,7 +9,7 @@ import {
 import Favicon from "@/app/(home)/components/favicon";
 import { Button } from "@/app/components/ui/button";
 import CopyButton from "@/app/(home)/components/copy-button";
-import ReactivateURLButton from "@/app/(home)/components/reactivate-url-button";
+import ReactivateUrlButton from "@/app/(home)/components/reactivate-url-button";
 import DeleteUrlButton from "@/app/(home)/components/delete-url-button";
 
 import { DotIcon } from "lucide-react";
@@ -55,7 +55,7 @@ const ShortUrlItem = ({ shortUrl }: ShortUrlItemProps) => {
         <div className="flex items-center gap-2.5">
           <CopyButton shortId={shortUrl.shortId} />
           {new Date() > new Date(shortUrl.expires_at) && (
-            <ReactivateURLButton shortURLId={shortUrl.id} />
+            <ReactivateUrlButton shortUrlId={shortUrl.id} />
           )}
           <DeleteUrlButton shortUrlId={shortUrl.id} />
         </div>
