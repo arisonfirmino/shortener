@@ -1,5 +1,5 @@
-"use client";
-
+import { cn } from "@/app/lib/utils";
+import { buttonVariants } from "@/app/components/ui/button";
 import {
   Card,
   CardHeader,
@@ -7,7 +7,6 @@ import {
   CardFooter,
 } from "@/app/components/ui/card";
 import Favicon from "@/app/(home)/components/favicon";
-import { Button } from "@/app/components/ui/button";
 import CopyButton from "@/app/(home)/components/copy-button";
 import ReactivateUrlButton from "@/app/(home)/components/reactivate-url-button";
 import DeleteUrlButton from "@/app/(home)/components/delete-url-button";
@@ -25,8 +24,7 @@ interface ShortUrlItemProps {
 const ShortUrlItem = ({ shortUrl }: ShortUrlItemProps) => {
   const shortLink = process.env.NEXT_PUBLIC_BASE_URL + shortUrl.shortId;
 
-  const redirect = () =>
-    window.open(shortLink, "_blank", "noopener,noreferrer");
+  const isExpired = new Date() > new Date(shortUrl.expires_at);
 
   return (
     <Card>
@@ -35,9 +33,7 @@ const ShortUrlItem = ({ shortUrl }: ShortUrlItemProps) => {
           <div className="flex items-center gap-1">
             <CardTitle>
               <Favicon url={shortUrl.originalUrl} />
-              <p className="truncate">
-                {shortUrl.title ? shortUrl.title : "Untitled"}
-              </p>
+              <span className="truncate">{shortUrl.title || "Untitled"}</span>
             </CardTitle>
 
             <DotIcon size={16} className="text-foreground/50" />
@@ -47,23 +43,26 @@ const ShortUrlItem = ({ shortUrl }: ShortUrlItemProps) => {
             </p>
           </div>
 
-          <Button onClick={redirect} size="link" variant="link">
+          <a
+            href={shortLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(buttonVariants({ size: "link", variant: "link" }))}
+          >
             {shortLink.replace(/^https?:\/\//, "")}
-          </Button>
+          </a>
         </div>
 
         <div className="flex items-center gap-2.5">
           <CopyButton shortId={shortUrl.shortId} />
-          {new Date() > new Date(shortUrl.expires_at) && (
-            <ReactivateUrlButton shortUrlId={shortUrl.id} />
-          )}
+          {isExpired && <ReactivateUrlButton shortUrlId={shortUrl.id} />}
           <DeleteUrlButton shortUrlId={shortUrl.id} />
         </div>
       </CardHeader>
 
       <CardFooter>
         <p className="max-w-1/2 truncate">{shortUrl.originalUrl}</p>
-        {new Date() > new Date(shortUrl.expires_at) ? (
+        {isExpired ? (
           <p className="text-red-600">expirado</p>
         ) : (
           <p>{formatExpiresDate(shortUrl.expires_at)} para expirar</p>
