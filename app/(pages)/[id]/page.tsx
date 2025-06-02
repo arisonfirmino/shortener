@@ -1,6 +1,7 @@
-import { incrementClickCount } from "@/app/actions/url";
 import { db } from "@/app/lib/prisma";
 import { notFound, redirect } from "next/navigation";
+
+import { incrementClickCount } from "@/app/actions/url/increment";
 
 const RedirectPage = async ({
   params,
