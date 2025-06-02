@@ -57,7 +57,7 @@ const ShortUrlItem = ({ shortUrl }: ShortUrlItemProps) => {
           {new Date() > new Date(shortUrl.expires_at) && (
             <ReactivateURLButton shortURLId={shortUrl.id} />
           )}
-          <DeleteUrlButton shortURLId={shortUrl.id} />
+          <DeleteUrlButton shortUrlId={shortUrl.id} />
         </div>
       </CardHeader>
 

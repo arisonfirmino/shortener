@@ -7,11 +7,11 @@ import { Button } from "@/app/components/ui/button";
 
 import { LoaderCircleIcon, Trash2Icon } from "lucide-react";
 
-import { DeleteShortUrl } from "@/app/actions/url";
+import { deleteShortUrl } from "@/app/actions/url/delete";
 
 import { toast } from "sonner";
 
-const DeleteUrlButton = ({ shortURLId }: { shortURLId: string }) => {
+const DeleteUrlButton = ({ shortUrlId }: { shortUrlId: string }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { data: session } = useSession();
@@ -24,15 +24,14 @@ const DeleteUrlButton = ({ shortURLId }: { shortURLId: string }) => {
 
     setIsLoading(true);
 
-    const response = await DeleteShortUrl({
+    const response = await deleteShortUrl({
       userId: session.user.id,
-      shortURLId,
+      shortUrlId,
     });
 
-    if (response?.error) {
-      alert(response.error);
-
+    if (!response.success) {
       setIsLoading(false);
+      toast(response.error);
       return;
     }
 
