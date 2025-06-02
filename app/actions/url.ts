@@ -1,50 +1,7 @@
 "use server";
 
 import { db } from "@/app/lib/prisma";
-import { nanoid } from "nanoid";
 import { revalidatePath } from "next/cache";
-
-interface CreateShortUrlProps {
-  userId: string;
-  title?: string;
-  url: string;
-}
-
-export const createShortUrl = async ({
-  userId,
-  title,
-  url,
-}: CreateShortUrlProps) => {
-  if (!userId) return { error: "Usuário não autenticado." };
-
-  const user = await db.user.findUnique({
-    where: { id: userId },
-  });
-
-  if (!user) return { error: "Usuário não encontrado." };
-
-  const existingUrl = await db.shortURL.findFirst({
-    where: {
-      originalUrl: url,
-      userId: userId,
-    },
-  });
-
-  if (existingUrl)
-    return {
-      type: "url",
-      error: "Você já criou um link encurtado para essa URL.",
-    };
-
-  const expires_at = new Date();
-  expires_at.setMonth(expires_at.getMonth() + 1);
-
-  await db.shortURL.create({
-    data: { userId, originalUrl: url, shortId: nanoid(8), title, expires_at },
-  });
-
-  revalidatePath("/");
-};
 
 interface DeleteShortUrlProps {
   userId: string;

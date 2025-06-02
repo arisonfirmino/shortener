@@ -11,9 +11,7 @@ import { Button } from "@/app/components/ui/button";
 
 import { LoaderCircleIcon, MoveRightIcon } from "lucide-react";
 
-import { createShortUrl } from "@/app/actions/url";
-
-import { User } from "@prisma/client";
+import { createShortUrl } from "@/app/actions/url/create";
 
 import { toast } from "sonner";
 
@@ -27,11 +25,7 @@ const schema = yup.object({
 
 type FormData = yup.InferType<typeof schema>;
 
-interface ShortenerFormProps {
-  user: Pick<User, "id">;
-}
-
-const ShortenerForm = ({ user }: ShortenerFormProps) => {
+const ShortenerForm = ({ userId }: { userId: string }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -47,27 +41,25 @@ const ShortenerForm = ({ user }: ShortenerFormProps) => {
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
 
-    const response = await createShortUrl({
-      userId: user.id,
-      title: data.title,
-      url: data.url,
-    });
+    const response = await createShortUrl({ ...data, userId });
 
-    if (response?.error) {
-      if (response.type === "url") {
+    if (!response.success) {
+      if (response.type === "conflict") {
         setError("url", {
           type: "manual",
           message: response.error,
         });
+      } else {
+        toast(response.error);
       }
 
       setIsLoading(false);
       return;
     }
 
-    setIsLoading(false);
-    toast("Nova URL adicionada com sucesso!");
+    toast("URL encurtada com sucesso!");
     reset();
+    setIsLoading(false);
   };
 
   return (

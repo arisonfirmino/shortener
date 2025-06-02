@@ -35,7 +35,7 @@ const Home = async () => {
 
         <div className="space-y-2.5">
           <ShortenerIntro />
-          <ShortenerForm user={user} />
+          <ShortenerForm userId={user.id} />
         </div>
 
         <Separator />
