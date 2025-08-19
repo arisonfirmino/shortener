@@ -1,21 +1,14 @@
-"use client";
-
-import { signIn, signOut, useSession } from "next-auth/react";
-
-import { Button } from "@/app/components/ui/button";
+import { Main } from "@/app/components/ui/main";
+import CreateLink from "@/app/components/create-link";
 
 const Home = () => {
-  const { data: session } = useSession();
-
-  const handleLogInClick = async () => await signIn("google");
-  const handleLogOutClick = async () => await signOut();
-
   return (
-    <main className="flex min-h-screen w-full flex-col items-center justify-center">
-      <Button onClick={session ? handleLogOutClick : handleLogInClick}>
-        {session ? "Fazer Logout" : "Fazer Login"}
-      </Button>
-    </main>
+    <Main>
+      <section className="w-full border-r"></section>
+      <section className="to-muted from-background w-full max-w-xs bg-gradient-to-t">
+        <CreateLink />
+      </section>
+    </Main>
   );
 };
 
