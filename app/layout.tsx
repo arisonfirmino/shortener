@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import AuthProvider from "@/app/providers/auth";
+import { Header } from "@/app/components/ui/header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +19,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <body className={`${inter.className} antialiased`}>
-        <AuthProvider>{children}</AuthProvider>
+      <body
+        className={`${inter.className} flex min-h-screen w-full flex-col items-center antialiased`}
+      >
+        <AuthProvider>
+          <Header />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
