@@ -12,10 +12,13 @@ import { Button } from "@/app/components/ui/button";
 
 import { LoaderCircleIcon, MoveRightIcon } from "lucide-react";
 
+import { createURL } from "@/app/actions/url/create";
+import { toast } from "sonner";
+
 const schema = yup.object({
   url: yup
     .string()
-    .required("A URL é obrigatória")
+    .required("Por favor, insira a URL que deseja encurtar.")
     .url("Digite uma URL válida, por exemplo: https://exemplo.com"),
 });
 
@@ -29,23 +32,38 @@ const ShortenerForm = () => {
   const {
     register,
     handleSubmit,
+    setError,
     reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     if (!session) {
+      toast.error("Usuário não identificado. Faça login para criar uma URL.");
       return;
     }
 
     setIsLoading(true);
 
-    console.log(data);
+    const result = await createURL({
+      userEmail: session.user.email,
+      url: data.url,
+    });
+
+    if (result?.error) {
+      setIsLoading(false);
+      setError("url", {
+        type: "manual",
+        message: result.error,
+      });
+      return;
+    }
 
     reset();
     setIsLoading(false);
+    toast.success("URL criada com sucesso!");
   };
 
   return (

@@ -12,12 +12,16 @@
   --color-border: var(--border);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
 }
 
 :root {
   --radius: 0.625rem;
   --background: oklch(100% 0.00011 271.152);
   --foreground: oklch(19.125% 0.00002 271.152);
+  --card: oklch(100% 0.00011 271.152);
+  --card-foreground: oklch(19.125% 0.00002 271.152);
   --primary: oklch(55.99% 0.24264 262.199);
   --primary-foreground: oklch(100% 0.00011 271.152);
   --border: oklch(91.279% 0.0001 271.152);
