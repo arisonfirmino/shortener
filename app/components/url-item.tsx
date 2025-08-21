@@ -4,7 +4,7 @@ import { Button } from "@/app/components/ui/button";
 import EditURL from "@/app/components/edit-url";
 import { Separator } from "@/app/components/ui/separator";
 
-import { ClockIcon, SendIcon } from "lucide-react";
+import { ClockIcon, MousePointerClickIcon, SendIcon } from "lucide-react";
 
 import { formatDate } from "@/app/helpers/formatDate";
 
@@ -37,7 +37,7 @@ const URLItem = ({ url }: { url: ShortURL }) => {
           target="_blank"
           rel="noopener noreferrer"
           className={cn(
-            "text-muted-foreground line-clamp-1 text-xs hover:underline",
+            "text-muted-foreground line-clamp-1 w-fit text-xs hover:underline",
           )}
         >
           {url.originalUrl}
@@ -45,9 +45,15 @@ const URLItem = ({ url }: { url: ShortURL }) => {
 
         <Separator className="my-3" />
 
-        <span className="text-muted-foreground flex items-center gap-1.5 text-xs">
-          <ClockIcon size={14} /> {formatDate(url.created_at)}
-        </span>
+        <div className="flex items-center justify-between">
+          <span className="text-muted-foreground flex items-center gap-1.5 text-xs">
+            <ClockIcon size={14} /> {formatDate(url.created_at)}
+          </span>
+
+          <span className="text-primary flex items-center gap-1.5 text-xs font-medium">
+            <MousePointerClickIcon size={14} /> {url.clicks}
+          </span>
+        </div>
       </CardFooter>
     </Card>
   );
