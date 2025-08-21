@@ -1,9 +1,10 @@
 import { cn } from "@/app/lib/utils";
 import { Card, CardHeader, CardFooter } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
+import EditURL from "@/app/components/edit-url";
 import { Separator } from "@/app/components/ui/separator";
 
-import { ClockIcon, EditIcon, SendIcon } from "lucide-react";
+import { ClockIcon, SendIcon } from "lucide-react";
 
 import { formatDate } from "@/app/helpers/formatDate";
 
@@ -23,9 +24,7 @@ const URLItem = ({ url }: { url: ShortURL }) => {
         </a>
 
         <div className="flex items-center gap-2.5">
-          <Button size="icon">
-            <EditIcon />
-          </Button>
+          <EditURL url={url} />
           <Button size="icon">
             <SendIcon />
           </Button>
