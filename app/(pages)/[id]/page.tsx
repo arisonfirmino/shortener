@@ -4,21 +4,21 @@ import { db } from "@/app/lib/prisma";
 
 import { incrementClickCount } from "@/app/actions/url/update";
 
-type PageProps = {
-  params: {
-    id: string;
-  };
-};
+const RedirectPage = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
+  const resolvedParams = await params;
 
-const RedirectPage = async ({ params }: PageProps) => {
   const shortURL = await db.shortURL.findUnique({
-    where: { shortId: params.id },
+    where: { shortId: resolvedParams.id },
   });
 
   if (!shortURL) return notFound();
   if (new Date() > shortURL.expires_at) return notFound();
 
-  await incrementClickCount({ shortId: params.id });
+  await incrementClickCount({ shortId: resolvedParams.id });
 
   redirect(shortURL.originalUrl);
 };
