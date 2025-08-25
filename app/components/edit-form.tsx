@@ -83,12 +83,12 @@ const EditForm = ({ url, setOpen }: EditFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="grid gap-2.5">
       <div className="flex items-center gap-2.5">
-        <div className="flex w-full items-center text-base">
-          <span>https://shortenerbr/</span>
+        <div className="flex w-full items-center text-base font-medium">
+          <span>{process.env.NEXT_PUBLIC_BASE_URL}</span>
           <input
             placeholder={url.shortId}
             {...register("shortId")}
-            className="w-full truncate outline-none"
+            className="text-primary placeholder:text-muted-foreground w-full truncate outline-none"
           />
         </div>
 
