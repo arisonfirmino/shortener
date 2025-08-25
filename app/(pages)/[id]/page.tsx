@@ -4,7 +4,13 @@ import { db } from "@/app/lib/prisma";
 
 import { incrementClickCount } from "@/app/actions/url/update";
 
-const RedirectPage = async ({ params }: { params: { id: string } }) => {
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
+
+const RedirectPage = async ({ params }: PageProps) => {
   const shortURL = await db.shortURL.findUnique({
     where: { shortId: params.id },
   });
