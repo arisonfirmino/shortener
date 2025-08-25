@@ -30,12 +30,15 @@ export const createURL = async ({ userEmail, url }: CreateURLDTO) => {
   if (existingUrl)
     return { error: "Essa URL já está na sua lista. Tente encurtar outra." };
 
+  const expiresAt = new Date();
+  expiresAt.setMonth(expiresAt.getMonth() + 1);
+
   await db.shortURL.create({
     data: {
       userId: user.id,
       originalUrl: url,
       shortId: nanoid(8),
-      expires_at: new Date(),
+      expires_at: expiresAt,
     },
   });
 
