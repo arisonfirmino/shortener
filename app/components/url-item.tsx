@@ -12,16 +12,19 @@ import { getTimeToExpire } from "@/app/helpers/formatDate";
 import { ShortURL } from "@prisma/client";
 
 const URLItem = ({ url }: { url: ShortURL }) => {
+  const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
+
   return (
     <Card>
       <CardHeader>
         <a
-          href={url.originalUrl}
+          href={baseURL + url.shortId}
           target="_blank"
           rel="noopener noreferrer"
           className={cn("text-sm font-semibold hover:underline")}
         >
-          <span className="text-primary">shortenerbr</span>/{url.shortId}
+          {baseURL?.replace(/^https?:\/\//, "")}
+          <span className="text-primary">{url.shortId}</span>
         </a>
 
         <div className="flex items-center gap-2.5">
