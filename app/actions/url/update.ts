@@ -50,3 +50,47 @@ export const updateShortId = async ({
 
   revalidatePath("/");
 };
+
+interface ReactivateURLDTO {
+  userEmail: string;
+  URLId: string;
+}
+
+export const reactivateURL = async ({ userEmail, URLId }: ReactivateURLDTO) => {
+  if (!userEmail)
+    throw new Error(
+      "Usuário não identificado. Faça login para atualizar sua URL.",
+    );
+
+  const user = await db.user.findUnique({ where: { email: userEmail } });
+  if (!user)
+    throw new Error(
+      "Conta de usuário não encontrada. Verifique suas credenciais.",
+    );
+
+  if (!URLId) throw new Error("Nenhuma URL foi selecionada para atualização.");
+
+  const url = await db.shortURL.findUnique({
+    where: { id: URLId },
+    include: { user: true },
+  });
+  if (!url)
+    throw new Error(
+      "A URL que você tentou atualizar não existe ou já foi removida.",
+    );
+
+  if (url.user.id !== user.id)
+    throw new Error("Você não tem permissão para atualizar esta URL.");
+
+  const expiresAt = new Date();
+  expiresAt.setMonth(expiresAt.getMonth() + 1);
+
+  await db.shortURL.update({
+    where: { id: URLId },
+    data: {
+      expires_at: expiresAt,
+    },
+  });
+
+  revalidatePath("/");
+};

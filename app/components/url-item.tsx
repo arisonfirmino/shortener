@@ -27,7 +27,7 @@ const URLItem = ({ url }: { url: ShortURL }) => {
         <div className="flex items-center gap-2.5">
           <EditURL url={url} />
           {new Date() > url.expires_at ? (
-            <ReactivateUrlButton />
+            <ReactivateUrlButton URLId={url.id} />
           ) : (
             <Button size="icon">
               <SendIcon />
