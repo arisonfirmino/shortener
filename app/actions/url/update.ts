@@ -97,3 +97,19 @@ export const reactivateURL = async ({ userEmail, URLId }: ReactivateURLDTO) => {
 
   revalidatePath("/");
 };
+
+export const incrementClickCount = async ({ shortId }: { shortId: string }) => {
+  if (!shortId)
+    throw new Error("É necessário informar o identificador da URL.");
+
+  const shortURL = await db.shortURL.findUnique({ where: { shortId } });
+  if (!shortURL)
+    throw new Error("Não existe uma URL associada a este identificador.");
+
+  await db.shortURL.update({
+    where: { shortId },
+    data: {
+      clicks: { increment: 1 },
+    },
+  });
+};
