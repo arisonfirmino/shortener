@@ -2,11 +2,12 @@ import { cn } from "@/app/lib/utils";
 import { Card, CardHeader, CardFooter } from "@/app/components/ui/card";
 import { Button } from "@/app/components/ui/button";
 import EditURL from "@/app/components/edit-url";
+import ReactivateUrlButton from "@/app/components/reactivate-url-button";
 import { Separator } from "@/app/components/ui/separator";
 
 import { ClockIcon, MousePointerClickIcon, SendIcon } from "lucide-react";
 
-import { formatDate } from "@/app/helpers/formatDate";
+import { getTimeToExpire } from "@/app/helpers/formatDate";
 
 import { ShortURL } from "@prisma/client";
 
@@ -25,9 +26,13 @@ const URLItem = ({ url }: { url: ShortURL }) => {
 
         <div className="flex items-center gap-2.5">
           <EditURL url={url} />
-          <Button size="icon">
-            <SendIcon />
-          </Button>
+          {new Date() > url.expires_at ? (
+            <ReactivateUrlButton />
+          ) : (
+            <Button size="icon">
+              <SendIcon />
+            </Button>
+          )}
         </div>
       </CardHeader>
 
@@ -47,7 +52,7 @@ const URLItem = ({ url }: { url: ShortURL }) => {
 
         <div className="flex items-center justify-between">
           <span className="text-muted-foreground flex items-center gap-1.5 text-xs">
-            <ClockIcon size={14} /> {formatDate(url.created_at)}
+            <ClockIcon size={14} /> {getTimeToExpire(url.expires_at)}
           </span>
 
           <span className="text-primary flex items-center gap-1.5 text-xs font-medium">
