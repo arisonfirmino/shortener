@@ -82,6 +82,9 @@ export const reactivateURL = async ({ userEmail, URLId }: ReactivateURLDTO) => {
   if (url.user.id !== user.id)
     throw new Error("Você não tem permissão para atualizar esta URL.");
 
+  if (new Date() < url.expires_at)
+    throw new Error("Esta URL ainda está ativa e não precisa ser reativada.");
+
   const expiresAt = new Date();
   expiresAt.setMonth(expiresAt.getMonth() + 1);
 
